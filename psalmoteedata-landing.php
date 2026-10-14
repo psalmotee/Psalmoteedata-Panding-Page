@@ -3,7 +3,7 @@
  * Plugin Name: PsalmoteeData Landing Page
  * Plugin URI: https://github.com/psalmotee/Psalmoteedata-Panding-Page
  * Description: Integrates the PsalmoteeData React landing page with WordPress.
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: Psalmotee-Tech
  * Author URI: https://portfolio-psalmotee.netlify.app/
  * Requires at least: 6.0
