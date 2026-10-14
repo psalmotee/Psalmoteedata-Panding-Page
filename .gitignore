@@ -1,0 +1,10 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.*
+
+# Local build and debug files
+*.log
+.DS_Store
