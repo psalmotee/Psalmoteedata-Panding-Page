@@ -25,7 +25,9 @@ if (!defined('ABSPATH')) {
 
 <?php wp_body_open(); ?>
 
-<div id="root"></div>
+<div class="psalmotee-app">
+    <div id="root"></div>
+</div>
 
 <?php wp_footer(); ?>
 
