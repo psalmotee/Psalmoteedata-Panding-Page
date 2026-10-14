@@ -1,10 +1,18 @@
 # Dependencies
+
 node_modules/
 
 # Environment variables
+
 .env
 .env.*
 
 # Local build and debug files
+
 *.log
+*.stackdump
 .DS_Store
+
+# Vite cache
+
+dist/.vite/
