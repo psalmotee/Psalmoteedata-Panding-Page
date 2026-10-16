@@ -9,8 +9,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('PDLP_VERSION', '1.3.0');
-
 $psd_companion_main_file = dirname(__DIR__) . '/psalmoteedata-landing.php';
 
 // Load companion-plugin assets independently of the VTUPress plugin.
@@ -39,7 +37,7 @@ $psd_support_email = 'psalmoteetelecoms@gmail.com';
 $psd_phone_display = '+234 805 846 1612';
 $psd_phone_href = '+2348058461612';
 $psd_year = (int) current_time('Y');
-$psd_logo_url = plugins_url('assets/img/assets/img/psalmoteedata-logo.png', dirname(__FILE__));
+$psd_logo_url = plugins_url('assets/img/psalmoteedata-logo.png', dirname(__FILE__));
 ?>
 
 <!doctype html>
