@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
     <?php wp_head(); ?>
 </head>
 
-<body <?php body_class('psalmotee-standalone-page'); ?>>
+<body <?php body_class('psalmotee-landing-page'); ?>>
 
 <?php wp_body_open(); ?>
 

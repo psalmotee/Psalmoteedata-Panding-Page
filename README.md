@@ -29,7 +29,7 @@ GitHub Actions automates the production build and release packaging process, whi
 * [WordPress Installation](#wordpress-installation)
 * [Automatic Updates](#automatic-updates)
 * [Branding and Design](#branding-and-design)
-* [Related WordPress Integration](#related-wordpress-integration)
+* [Offline Account Integration](#offline-account-integration)
 * [Troubleshooting](#troubleshooting)
 * [Contributing](#contributing)
 * [Author](#author)
