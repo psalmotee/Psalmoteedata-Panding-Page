@@ -3,7 +3,7 @@
  * Plugin Name: PsalmoteeData Landing Page
  * Plugin URI: https://github.com/psalmotee/Psalmoteedata-Panding-Page
  * Description: Integrates the PsalmoteeData React landing page with WordPress.
- * Version: 1.2.1
+ * Version: 1.3.0
  * Author: Psalmotee-Tech
  * Author URI: https://portfolio-psalmotee.netlify.app/
  * Requires at least: 6.0
@@ -13,6 +13,9 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+
+// Define the plugin version constant for use in enqueuing assets.
+define('PDLP_VERSION', '1.3.0');
 
 /*
 |--------------------------------------------------------------------------
@@ -78,8 +81,12 @@ add_action('plugins_loaded', 'pdlp_initialize_update_checker');
  * Register the landing-page template in the WordPress page editor.
  */
 function pdlp_register_page_template($templates) {
+
     $templates['templates/psalmotee-landing-template.php'] =
         'Psalmotee React Landing Page (Standalone)';
+
+    $templates['templates/psalmotee-offline-template.php'] =
+        'Psalmotee Offline Account (Standalone)';
 
     return $templates;
 }
@@ -88,12 +95,16 @@ add_filter('theme_page_templates', 'pdlp_register_page_template');
 
 
 /**
- * Load the standalone template from this plugin.
+ * Load custom standalone templates from this plugin.
  *
  * This bypasses the theme's normal page layout when the
  * standalone template is selected.
+ * Supports:
+ * - React landing page
+ * - Offline account page
  */
 function pdlp_load_page_template($template) {
+
     if (!is_page()) {
         return $template;
     }
@@ -102,15 +113,16 @@ function pdlp_load_page_template($template) {
         get_queried_object_id()
     );
 
-    if (
-        $selected_template !==
-        'templates/psalmotee-landing-template.php'
-    ) {
+    $custom_templates = array(
+        'templates/psalmotee-landing-template.php',
+        'templates/psalmotee-offline-template.php',
+    );
+
+    if (!in_array($selected_template, $custom_templates, true)) {
         return $template;
     }
 
-    $plugin_template = PDLP_PLUGIN_DIR
-        . 'templates/psalmotee-landing-template.php';
+    $plugin_template = PDLP_PLUGIN_DIR . $selected_template;
 
     if (file_exists($plugin_template)) {
         return $plugin_template;
@@ -121,6 +133,30 @@ function pdlp_load_page_template($template) {
 
 add_filter('template_include', 'pdlp_load_page_template', 99);
 
+/**
+ * Enqueue the offline page CSS only when the offline shortcode is present.
+ */
+
+add_action('wp_enqueue_scripts', function () {
+    if (!is_singular()) {
+        return;
+    }
+
+    global $post;
+    if (!$post || !has_shortcode($post->post_content, 'vpaccount-offline')) {
+        return;
+    }
+
+    $css_file = plugin_dir_path(__FILE__) . 'assets/css/offline.css';
+    if (file_exists($css_file)) {
+        wp_enqueue_style(
+            'psalmoteedata-offline-page',
+            plugin_dir_url(__FILE__) . 'assets/css/offline.css',
+            [],
+            (string) filemtime($css_file)
+        );
+    }
+}, 30);
 
 /*
 |--------------------------------------------------------------------------
@@ -188,7 +224,7 @@ function pdlp_enqueue_assets() {
                 'pdlp-style-' . $index,
                 PDLP_PLUGIN_URL . 'dist/' . $css_file,
                 array(),
-                '1.1.0'
+                PDLP_VERSION
             );
         }
     }
@@ -214,7 +250,7 @@ function pdlp_enqueue_assets() {
                     ),
                     PDLP_PLUGIN_URL . 'dist/' . $css_file,
                     array(),
-                    '1.1.0'
+                    PDLP_VERSION
                 );
             }
         }
@@ -227,7 +263,7 @@ function pdlp_enqueue_assets() {
         'pdlp-app',
         PDLP_PLUGIN_URL . 'dist/' . $entry['file'],
         array(),
-        '1.1.0',
+        PDLP_VERSION,
         true
     );
 }

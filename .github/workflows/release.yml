@@ -32,6 +32,10 @@ jobs:
         run: |
           test -f psalmoteedata-landing.php
           test -f templates/psalmotee-landing-template.php
+          test -f templates/psalmotee-offline-template.php
+          test -f assets/css/offline.css
+          test -f assets/js/offline.js
+          test -f assets/img/psalmoteedata-logo.png
           test -f plugin-update-checker/plugin-update-checker.php
           test -f dist/.vite/manifest.json
 

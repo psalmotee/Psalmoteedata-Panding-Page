@@ -75,7 +75,7 @@ export default function Header() {
           {/* Logo */}
           <button
             onClick={() => navigate("/")}
-            className="flex items-center gap-2.5 no-underline bg-none border-none cursor-pointer p-0"
+            className="flex items-center gap-2.5 no-underline bg-transparent border-none cursor-pointer p-0"
           >
             <img
               src={logo}
@@ -86,7 +86,6 @@ export default function Header() {
               PsalmoteeData
             </span>
           </button>
-
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-9">
             {NAV_LINKS.map((l) => (
@@ -94,16 +93,18 @@ export default function Header() {
                 key={l.key}
                 onClick={() => handleNav(l)}
                 className={`
-                  relative text-sm font-medium no-underline transition-colors duration-200
-                  bg-none border-none cursor-pointer p-0
-                  ${
-                    isActive(l.key)
-                      ? "text-primary"
-                      : "text-muted hover:text-[var(--text)]"
-                  }
-                `}
+        relative text-sm font-medium no-underline
+        transition-colors duration-200
+        bg-transparent border-none cursor-pointer p-0
+        ${
+          isActive(l.key)
+            ? "text-primary"
+            : "text-muted hover:text-[var(--text)]"
+        }
+      `}
               >
                 {l.label}
+
                 {isActive(l.key) && (
                   <motion.span
                     layoutId="nav-underline"
@@ -174,11 +175,7 @@ export default function Header() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.07 }}
                   className="
-                    flex items-center justify-between
-                    py-4 text-lg font-medium no-underline
-                    border-b border-[var(--border)]
-                    text-[var(--text)] hover:text-primary transition-colors
-                    bg-none border-none cursor-pointer w-full text-left p-0 py-4
+                    flex items-center justify-between py-4 text-lg font-medium no-underline border-0 border-b border-solid border-[var(--border)] text-[var(--text)] hover:text-primary transition-colors duration-200 bg-transparent cursor-pointer w-full text-left
                   "
                 >
                   {l.label}

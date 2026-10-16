@@ -129,7 +129,7 @@ export default function Footer() {
               Company
             </h4>
             {COMPANY_LINKS.map((l) => (
-              <button
+              <a
                 key={l.label}
                 onClick={() => {
                   navigate(l.path);
@@ -142,7 +142,7 @@ export default function Footer() {
                 "
               >
                 {l.label}
-              </button>
+              </a>
             ))}
           </div>
 

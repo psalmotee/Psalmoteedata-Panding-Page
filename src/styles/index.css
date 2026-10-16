@@ -1,61 +1,48 @@
 @import url('https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* =========================================
+/* ─────────────────────────────────────────────
    DESIGN TOKENS
-========================================= */
+   Scoped variables prevent accidental conflicts
+   with other WordPress components.
+   ───────────────────────────────────────────── */
 
-:root {
+.psalmotee-app {
   --primary: #0EA5C6;
   --primary-dk: #0284A8;
   --blue: #2563EB;
   --accent: #F59E0B;
   --accent2: #F97316;
-
   --bg: #0B1220;
   --card: #111827;
   --card2: #0F1929;
-
   --text: #E5E7EB;
   --muted: #9CA3AF;
-
   --border: rgba(14, 165, 198, 0.15);
   --glow: rgba(14, 165, 198, 0.25);
-}
 
-/* =========================================
-   REACT APPLICATION ROOT
-========================================= */
-
-.psalmotee-app {
-  position: relative;
   width: 100%;
   max-width: 100%;
-  min-height: 100vh;
-
-  margin: 0;
-  padding: 0;
-
-  overflow-x: clip;
-
-  background-color: var(--bg);
-  color: var(--text);
+  min-width: 0;
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
 
   font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--bg);
 
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  isolation: isolate;
 }
 
-/* Box sizing inside the React application only */
+/* ─────────────────────────────────────────────
+   BOX SIZING
+   Apply only inside the landing page.
+   ───────────────────────────────────────────── */
 
 .psalmotee-app *,
 .psalmotee-app *::before,
@@ -63,18 +50,36 @@
   box-sizing: border-box;
 }
 
-/* React root */
+/* ─────────────────────────────────────────────
+   PAGE BACKGROUND
+   Keep the dark background on the app itself,
+   not on the entire WordPress body.
+   ───────────────────────────────────────────── */
 
-.psalmotee-app #root {
-  width: 100%;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
+html {
+  scroll-behavior: smooth;
 }
 
-/* =========================================
+.psalmotee-app {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Preserve full-width background for the landing
+   page if its content extends to the viewport edges. */
+
+.psalmotee-app::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────
    TYPOGRAPHY
-========================================= */
+   ───────────────────────────────────────────── */
 
 .psalmotee-app h1,
 .psalmotee-app h2,
@@ -82,207 +87,176 @@
 .psalmotee-app h4,
 .psalmotee-app h5,
 .psalmotee-app h6 {
-  margin: 0;
-  padding: 0;
-
-  color: inherit;
-
   font-family: 'Clash Display', 'DM Sans', sans-serif;
-  font-weight: inherit;
+  color: inherit;
   line-height: inherit;
+  margin: 0;
 }
 
 .psalmotee-app p {
-  margin: 0;
-  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .psalmotee-app ul,
 .psalmotee-app ol {
-  margin: 0;
-  padding: 0;
-}
-
-.psalmotee-app li {
-  margin: 0;
-}
-
-.psalmotee-app a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.psalmotee-app button,
-.psalmotee-app input,
-.psalmotee-app textarea,
-.psalmotee-app select {
-  font: inherit;
-}
-
-.psalmotee-app button {
-  color: inherit;
-}
-
-.psalmotee-app img,
-.psalmotee-app video,
-.psalmotee-app canvas,
-.psalmotee-app svg {
-  vertical-align: middle;
-}
-
-.psalmotee-app img {
-  max-width: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .psalmotee-app figure {
   margin: 0;
 }
 
-/* =========================================
-   WORDPRESS / ASTRA COMPATIBILITY
-========================================= */
-
-/* Prevent the application from inheriting unwanted
-   width constraints from common content wrappers. */
-
-.psalmotee-app .container,
-.psalmotee-app [class*="container"],
-.psalmotee-app .wp-block-group {
+.psalmotee-app img,
+.psalmotee-app video {
   max-width: 100%;
+  height: auto;
 }
 
-/* Ensure the React application occupies its own width. */
+/* ─────────────────────────────────────────────
+   LINKS
+   Prevent Astra's link colors from changing
+   landing page links without removing their
+   existing hover effects.
+   ───────────────────────────────────────────── */
 
-.psalmotee-app,
-.psalmotee-app #root {
-  width: 100%;
-  max-width: 100%;
+.psalmotee-app a {
+  color: inherit;
 }
 
-/* Avoid unexpected image and figure spacing. */
+/* ─────────────────────────────────────────────
+   BUTTONS
+   Keep existing button appearance and prevent
+   inherited WordPress typography from leaking in.
+   Do not globally reset button backgrounds or hover.
+   ───────────────────────────────────────────── */
 
-.psalmotee-app figure,
-.psalmotee-app picture {
-  margin: 0;
-}
-
-/* Keep buttons consistent with the React design. */
-
-.psalmotee-app button {
+.psalmotee-app button,
+.psalmotee-app input,
+.psalmotee-app select,
+.psalmotee-app textarea {
   font-family: 'DM Sans', sans-serif;
 }
 
-/* =========================================
-   SCROLLBAR
-========================================= */
+/* ─────────────────────────────────────────────
+   LAYOUT COMPATIBILITY
+   Reset Astra layout constraints only for elements
+   that actually serve as layout wrappers.
+   ───────────────────────────────────────────── */
 
-.psalmotee-app ::-webkit-scrollbar {
+.psalmotee-app .container,
+.psalmotee-app [class~="wp-block-group"] {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Avoid applying width: 100% and zero padding to
+   every class containing the word "container".
+   Existing landing page layout utilities are retained. */
+
+/* Prevent WordPress content margins from affecting
+   the landing page's direct content elements. */
+
+.psalmotee-app> :first-child {
+  margin-top: 0;
+}
+
+/* ─────────────────────────────────────────────
+   SCROLLBAR
+   Scope scrollbar colors to the landing page
+   where supported, without changing the whole
+   WordPress site's scrollbar.
+   ───────────────────────────────────────────── */
+
+.psalmotee-app {
+  scrollbar-color: var(--primary) var(--bg);
+  scrollbar-width: thin;
+}
+
+.psalmotee-app::-webkit-scrollbar {
   width: 5px;
 }
 
-.psalmotee-app ::-webkit-scrollbar-track {
+.psalmotee-app::-webkit-scrollbar-track {
   background: var(--bg);
 }
 
-.psalmotee-app ::-webkit-scrollbar-thumb {
+.psalmotee-app::-webkit-scrollbar-thumb {
   background: var(--primary);
   border-radius: 10px;
 }
 
-/* =========================================
+/* ─────────────────────────────────────────────
    SCROLL PROGRESS BAR
-========================================= */
+   ───────────────────────────────────────────── */
 
-#scroll-progress {
+.psalmotee-app #scroll-progress {
   position: fixed;
   top: 0;
   left: 0;
-
-  width: 0;
   height: 3px;
-
   z-index: 9999;
-
-  background: linear-gradient(90deg,
-      var(--primary),
-      var(--blue));
-
+  background: linear-gradient(90deg, var(--primary), var(--blue));
   transition: width 0.08s linear;
   pointer-events: none;
 }
 
-/* =========================================
+/* ─────────────────────────────────────────────
    GRADIENT TEXT
-========================================= */
+   ───────────────────────────────────────────── */
 
 .psalmotee-app .gradient-text {
-  background: linear-gradient(135deg,
-      var(--primary),
-      var(--blue));
-
+  background: linear-gradient(135deg, var(--primary), var(--blue));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* =========================================
+/* ─────────────────────────────────────────────
    SECTION TAG
-========================================= */
+   ───────────────────────────────────────────── */
 
 .psalmotee-app .section-tag {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-
-  margin-bottom: 12px;
-
   color: var(--primary);
-
   font-size: 0.75rem;
   font-weight: 600;
-
   text-transform: uppercase;
   letter-spacing: 2px;
+  margin-bottom: 12px;
 }
 
 .psalmotee-app .section-tag::before {
   content: '';
-
   width: 18px;
   height: 2px;
-
-  flex-shrink: 0;
-
   background: var(--primary);
   border-radius: 2px;
 }
 
-/* =========================================
+/* ─────────────────────────────────────────────
    GRID OVERLAY
-========================================= */
+   ───────────────────────────────────────────── */
 
 .psalmotee-app .grid-overlay {
   background-image:
-    linear-gradient(rgba(14, 165, 198, 0.04) 1px,
-      transparent 1px),
-    linear-gradient(90deg,
-      rgba(14, 165, 198, 0.04) 1px,
-      transparent 1px);
-
+    linear-gradient(rgba(14, 165, 198, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 165, 198, 0.04) 1px, transparent 1px);
   background-size: 60px 60px;
-
   -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%,
       black,
       transparent);
-
   mask-image: radial-gradient(ellipse 80% 80% at 50% 50%,
       black,
       transparent);
 }
 
-/* =========================================
+/* ─────────────────────────────────────────────
    GLOW ORBS
-========================================= */
+   ───────────────────────────────────────────── */
 
 .psalmotee-app .glow-orb-primary {
   background: radial-gradient(ellipse,
@@ -296,9 +270,9 @@
       transparent 70%);
 }
 
-/* =========================================
-   CARD HOVER EFFECTS
-========================================= */
+/* ─────────────────────────────────────────────
+   CARD HOVER
+   ───────────────────────────────────────────── */
 
 .psalmotee-app .card-hover {
   transition:
@@ -309,85 +283,94 @@
 
 .psalmotee-app .card-hover:hover {
   transform: translateY(-6px);
-
   border-color: rgba(14, 165, 198, 0.4) !important;
-
   box-shadow:
     0 20px 50px rgba(0, 0, 0, 0.3),
     0 0 30px rgba(14, 165, 198, 0.1);
 }
 
-/* =========================================
-   BACK TO TOP BUTTON
-========================================= */
+/* ─────────────────────────────────────────────
+   HEADER AND FOOTER BUTTON PROTECTION
+   WordPress/Astra header and footer are outside
+   the landing page scope. These rules deliberately
+   do not modify their button colors or hover states.
+   Landing page button styling remains isolated.
+   ───────────────────────────────────────────── */
 
-#back-to-top {
+/* ==========================================
+   FIX ASTRA BUTTON STYLES
+   ========================================== */
+
+.psalmotee-app button,
+.psalmotee-app button:hover,
+.psalmotee-app button:focus,
+.psalmotee-app button:focus-visible,
+.psalmotee-app button:active {
+  background-color: transparent;
+  background-image: none;
+}
+
+/* Desktop navigation: change text color, not background */
+.psalmotee-app nav button:hover {
+  background-color: transparent;
+  background-image: none;
+}
+
+/* Mobile navigation: preserve the transparent background */
+.psalmotee-app nav button:focus,
+.psalmotee-app nav button:focus-visible,
+.psalmotee-app nav button:active {
+  background-color: transparent;
+  background-image: none;
+}
+
+/* Keep keyboard focus accessible */
+.psalmotee-app nav button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
+
+/* ─────────────────────────────────────────────
+   ASTRA SCROLL-TO-TOP BUTTON
+   Hide the theme's scroll-to-top button on the
+   landing page so it does not overlap the custom
+   #back-to-top button.
+   ───────────────────────────────────────────── */
+
+/* Add the class "psalmoteedata-landing-page" to the
+   landing page's <body> (PHP) element if you want to
+   hide Astra's button on this page only. */
+
+body.psalmoteedata-landing-page #ast-scroll-top {
+  display: none !important;
+}
+
+/* ─────────────────────────────────────────────
+   CUSTOM BACK-TO-TOP BUTTON
+   ───────────────────────────────────────────── */
+
+.psalmotee-app #back-to-top {
   position: fixed;
-
-  right: 28px;
   bottom: 28px;
-
+  right: 28px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), var(--blue));
+  color: #fff;
+  border: none;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  width: 44px;
-  height: 44px;
-
-  padding: 0;
-
-  border: none;
-  border-radius: 12px;
-
-  background: linear-gradient(135deg,
-      var(--primary),
-      var(--blue));
-
-  color: #fff;
-
-  cursor: pointer;
-
   z-index: 1000;
-
   box-shadow: 0 4px 20px rgba(14, 165, 198, 0.4);
-
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-#back-to-top:hover {
+.psalmotee-app #back-to-top:hover {
   transform: translateY(-3px);
-
+  background: linear-gradient(135deg, var(--primary), var(--blue));
+  color: #fff;
   box-shadow: 0 8px 28px rgba(14, 165, 198, 0.5);
-}
-
-/* =========================================
-   RESPONSIVE ADJUSTMENTS
-========================================= */
-
-@media (max-width: 768px) {
-  .psalmotee-app {
-    font-size: 15px;
-  }
-
-  #back-to-top {
-    right: 16px;
-    bottom: 16px;
-
-    width: 42px;
-    height: 42px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-  .psalmotee-app *,
-  .psalmotee-app *::before,
-  .psalmotee-app *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
 }
